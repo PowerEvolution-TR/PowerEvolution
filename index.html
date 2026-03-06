@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Power Evolution | v1.0.0</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap');
+        
+        :root {
+            --primary: #3b82f6;
+            --bg: #050505;
+        }
+
+        body { 
+            background-color: var(--bg); 
+            color: white; 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            overflow-x: hidden;
+            user-select: none;
+        }
+
+        .mesh-gradient {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: 
+                radial-gradient(circle at 10% 10%, rgba(59, 130, 246, 0.12) 0%, transparent 40%),
+                radial-gradient(circle at 90% 90%, rgba(29, 78, 216, 0.08) 0%, transparent 40%);
+            z-index: -1;
+            filter: blur(80px);
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .hero-text {
+            background: linear-gradient(180deg, #fff 0%, #777 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .download-active {
+            background: linear-gradient(90deg, #1d4ed8, #3b82f6);
+            animation: pulse-blue 2s infinite;
+        }
+
+        @keyframes pulse-blue {
+            0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.6); }
+            70% { box-shadow: 0 0 0 15px rgba(59, 130, 246, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
+        }
+
+        .hidden { display: none; }
+        
+        /* İletişim Alt Bilgi Stili */
+        .contact-info {
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            padding-top: 2rem;
+            margin-top: 4rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="mesh-gradient"></div>
+
+    <nav class="fixed top-0 w-full z-50 border-b border-white/5 bg-black/10 backdrop-blur-xl">
+        <div class="max-w-7xl mx-auto px-8 py-5 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <div class="w-9 h-9 bg-blue-600 rounded-xl flex items-center justify-center font-black text-sm shadow-lg shadow-blue-600/20">PE</div>
+                <span class="text-lg font-bold tracking-tight uppercase">Power Evolution</span>
+            </div>
+            
+            <div class="flex items-center space-x-6">
+                <button onclick="toggleModal('loginModal')" id="navLoginBtn" class="bg-white text-black px-8 py-2.5 rounded-full font-bold text-xs hover:bg-blue-600 hover:text-white transition-all duration-500 transform active:scale-95">GİRİŞ YAP</button>
+                <div id="userBadge" class="hidden flex items-center space-x-2 text-blue-400 border border-blue-500/20 px-5 py-2 rounded-full bg-blue-500/5">
+                    <span class="w-1.5 h-1.5 bg-blue-500 rounded-full animate-ping"></span>
+                    <span class="font-bold text-[10px] uppercase tracking-widest">Sistem Yetkisi Aktif</span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="relative min-h-screen flex flex-col items-center justify-center px-6 text-center pt-20">
+        <div class="mb-6 px-4 py-1.5 bg-white/5 border border-white/10 rounded-full text-blue-400 text-[10px] font-bold tracking-[0.4em] uppercase">
+            Sürüm v1.0.0 Stable
+        </div>
+        
+        <h1 class="hero-text text-6xl md:text-[120px] font-extrabold mb-8 tracking-tighter leading-[0.85]">
+            GÜCÜN <br> YENİ YÜZÜ
+        </h1>
+        
+        <p class="text-gray-400 max-w-xl text-base md:text-lg mb-12 font-light leading-relaxed">
+            Performans optimizasyonunda yeni bir dönem başladı. Power Evolution v1.0.0 ile sisteminizi en verimli hale getirin.
+        </p>
+
+        <div id="lockedArea">
+            <button onclick="toggleModal('loginModal')" class="glass px-14 py-5 rounded-2xl font-bold text-sm text-gray-400 hover:text-white hover:border-blue-500/40 transition-all duration-700 group tracking-widest uppercase">
+                Panel Erişimini Doğrula
+            </button>
+        </div>
+        
+        <div id="unlockedArea" class="hidden flex flex-col items-center">
+            <a id="dynamicDownloadBtn" href="#" target="_blank" class="download-active px-20 py-7 text-white rounded-3xl font-black text-2xl tracking-tighter transition-all hover:scale-105 inline-block">
+                DOSYAYI İNDİR (.RAR)
+            </a>
+            <p class="text-[9px] text-gray-500 mt-6 font-bold tracking-[0.5em] uppercase">Güvenli Bağlantı Kuruldu</p>
+        </div>
+
+        <div class="contact-info w-full max-w-2xl flex flex-col md:flex-row items-center justify-center gap-8 text-[11px] font-medium text-gray-500 tracking-widest uppercase">
+            <div class="flex items-center space-x-2 hover:text-white transition cursor-default">
+                <span class="text-blue-500">EMAIL:</span>
+                <span>powerevolution@outlook.com.tr</span>
+            </div>
+            <div class="flex items-center space-x-2 hover:text-white transition cursor-default">
+                <span class="text-blue-500">INSTAGRAM:</span>
+                <span>jatenow.wt</span>
+            </div>
+        </div>
+    </main>
+
+    <div id="loginModal" class="fixed inset-0 bg-black/90 backdrop-blur-3xl z-[100] hidden flex items-center justify-center p-4">
+        <div class="glass w-full max-w-[400px] p-12 rounded-[40px] relative">
+            <button onclick="toggleModal('loginModal')" class="absolute top-8 right-8 text-gray-500 hover:text-white transition text-2xl">&times;</button>
+            
+            <div class="text-center mb-12">
+                <h3 class="text-3xl font-black mb-2 uppercase tracking-tighter">Kimlik</h3>
+                <p class="text-gray-500 text-[10px] font-bold tracking-[0.3em] uppercase">Sistem Erişimi v1.0.0</p>
+            </div>
+            
+            <div class="space-y-6">
+                <input id="u" type="text" spellcheck="false" class="w-full bg-white/[0.03] border border-white/5 p-4 rounded-2xl outline-none focus:border-blue-500 transition text-white text-sm" placeholder="Kullanıcı Adı">
+                <input id="p" type="password" class="w-full bg-white/[0.03] border border-white/5 p-4 rounded-2xl outline-none focus:border-blue-500 transition text-white text-sm" placeholder="Şifre">
+                <button onclick="loginProcess()" id="authBtn" class="w-full bg-blue-600 py-5 rounded-2xl font-black text-xs tracking-[0.2em] hover:bg-blue-500 transition-all active:scale-[0.97]">DOĞRULA VE GİRİŞ YAP</button>
+                <p id="errorMsg" class="text-red-500 text-[10px] text-center font-bold hidden uppercase tracking-widest animate-pulse">Erişim reddedildi: Kayıt bulunamadı.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // GÜVENLİK
+        document.addEventListener('contextmenu', e => e.preventDefault());
+        document.onkeydown = function(e) {
+            if(e.keyCode == 123 || (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74)) || (e.ctrlKey && e.keyCode == 85)) return false;
+        };
+
+        // KONFİGÜRASYON
+        const SUPA_URL = 'https://qgdizoyucaqefakvvhyn.supabase.co'; 
+        const SUPA_KEY = 'sb_publishable_4lGcYO1Jp0PpRoVWc5sNTw_CfynNZMI'; 
+
+        const _supabase = supabase.createClient(SUPA_URL, SUPA_KEY);
+
+        function toggleModal(id) { document.getElementById(id).classList.toggle('hidden'); }
+
+        async function loginProcess() {
+            const user = document.getElementById('u').value;
+            const pass = document.getElementById('p').value;
+            const btn = document.getElementById('authBtn');
+            const error = document.getElementById('errorMsg');
+
+            btn.innerText = "SİSTEM KONTROLÜ...";
+            btn.disabled = true;
+            error.classList.add('hidden');
+
+            const { data } = await _supabase.from('users').select('*').eq('username', user).eq('password', pass);
+
+            if (data && data.length > 0) {
+                toggleModal('loginModal');
+                const enc = "aHR0cHM6Ly93d3cubWVkaWFmaXJlLmNvbS9maWxlL2gwNmVoZzRkcWw3MGx6cS9Qb3dlckV2b2x1dGlvbi5yYXIvZmlsZQ==";
+                document.getElementById('dynamicDownloadBtn').href = atob(enc);
+
+                document.getElementById('navLoginBtn').classList.add('hidden');
+                document.getElementById('userBadge').classList.remove('hidden');
+                document.getElementById('lockedArea').classList.add('hidden');
+                document.getElementById('unlockedArea').classList.remove('hidden');
+            } else {
+                error.classList.remove('hidden');
+                btn.innerText = "TEKRAR DENE";
+                btn.disabled = false;
+            }
+        }
+    </script>
+</body>
+</html>

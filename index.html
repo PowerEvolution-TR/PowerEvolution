@@ -9,65 +9,27 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap');
         
-        :root {
-            --primary: #3b82f6;
-            --bg: #050505;
-        }
+        :root { --primary: #3b82f6; --bg: #050505; }
+        body { background-color: var(--bg); color: white; font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden; user-select: none; }
+        
+        .mesh-gradient { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at 10% 10%, rgba(59, 130, 246, 0.12) 0%, transparent 40%), radial-gradient(circle at 90% 90%, rgba(29, 78, 216, 0.08) 0%, transparent 40%); z-index: -1; filter: blur(80px); }
+        .glass { background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(25px); border: 1px solid rgba(255, 255, 255, 0.05); }
+        .hero-text { background: linear-gradient(180deg, #fff 0%, #777 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        
+        /* SSS Akordeon */
+        .faq-content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; }
+        .faq-item.active .faq-content { max-height: 200px; margin-top: 1rem; }
+        .faq-item.active .faq-icon { transform: rotate(180deg); }
 
-        body { 
-            background-color: var(--bg); 
-            color: white; 
-            font-family: 'Plus Jakarta Sans', sans-serif; 
-            overflow-x: hidden;
-            user-select: none;
-        }
+        .download-active { background: linear-gradient(90deg, #1d4ed8, #3b82f6); animation: pulse-blue 2s infinite; }
+        @keyframes pulse-blue { 0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.6); } 70% { box-shadow: 0 0 0 15px rgba(59, 130, 246, 0); } 100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); } }
 
-        .mesh-gradient {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: 
-                radial-gradient(circle at 10% 10%, rgba(59, 130, 246, 0.12) 0%, transparent 40%),
-                radial-gradient(circle at 90% 90%, rgba(29, 78, 216, 0.08) 0%, transparent 40%);
-            z-index: -1;
-            filter: blur(80px);
-        }
-
-        .glass {
-            background: rgba(255, 255, 255, 0.02);
-            backdrop-filter: blur(25px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .hero-text {
-            background: linear-gradient(180deg, #fff 0%, #777 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .title-spacing {
-            line-height: 1.3; 
-            margin-bottom: 1.5rem;
-            display: block;
-        }
-
-        .download-active {
-            background: linear-gradient(90deg, #1d4ed8, #3b82f6);
-            animation: pulse-blue 2s infinite;
-        }
-
-        @keyframes pulse-blue {
-            0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.6); }
-            70% { box-shadow: 0 0 0 15px rgba(59, 130, 246, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
-        }
-
+        #purchaseToast { transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55); transform: translateX(-120%); }
+        #purchaseToast.show { transform: translateX(0); }
         .hidden { display: none; }
         
-        .contact-info {
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            padding-top: 2rem;
-            margin-top: 4rem;
-        }
+        .fade-in { animation: fadeIn 0.8s ease forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
@@ -81,120 +43,165 @@
             </div>
             
             <div class="flex items-center space-x-6">
-                <button onclick="toggleModal('loginModal')" id="navLoginBtn" class="bg-white text-black px-8 py-2.5 rounded-full font-bold text-xs hover:bg-blue-600 hover:text-white transition-all duration-500 transform active:scale-95">GİRİŞ YAP</button>
+                <a href="https://discord.gg/VCg5PKaQKM" target="_blank" class="hidden md:flex items-center space-x-2 text-gray-400 hover:text-[#5865F2] transition-all duration-300 text-[10px] font-bold tracking-widest uppercase group">
+                    <svg class="group-hover:scale-110 transition-transform" width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037 19.736 19.736 0 0 0-4.885 1.515.069.069 0 0 0-.032.027C.533 9.048-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.23 10.23 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
+                    <span>Discord</span>
+                </a>
+
+                <div class="flex bg-white/5 p-1 rounded-xl border border-white/10">
+                    <button onclick="changeLanguage('tr')" id="lang-tr" class="p-1.5 text-[10px] font-extrabold rounded-lg px-3 transition duration-300 active bg-blue-600">TR</button>
+                    <button onclick="changeLanguage('en')" id="lang-en" class="p-1.5 text-[10px] font-extrabold rounded-lg px-3 transition duration-300">EN</button>
+                </div>
+
+                <button onclick="toggleModal('loginModal')" id="navLoginBtn" class="bg-white text-black px-8 py-2.5 rounded-full font-bold text-xs hover:bg-blue-600 hover:text-white transition-all duration-500 uppercase">OTURUM AÇ</button>
                 <div id="userBadge" class="hidden flex items-center space-x-2 text-blue-400 border border-blue-500/20 px-5 py-2 rounded-full bg-blue-500/5">
                     <span class="w-1.5 h-1.5 bg-blue-500 rounded-full animate-ping"></span>
-                    <span class="font-bold text-[10px] uppercase tracking-widest text-center">Erişim Onaylandı</span>
+                    <span data-lang="accessGranted" class="font-bold text-[10px] uppercase tracking-widest">Erişim Onaylandı</span>
                 </div>
             </div>
         </div>
     </nav>
 
-    <main class="relative min-h-screen flex flex-col items-center justify-center px-6 text-center pt-20">
-        <div class="mb-6 px-4 py-1.5 bg-white/5 border border-white/10 rounded-full text-blue-400 text-[10px] font-bold tracking-[0.4em] uppercase">
+    <main class="relative min-h-screen flex flex-col items-center justify-center px-6 text-center pt-40 pb-20">
+        <div class="flex flex-wrap justify-center gap-4 mb-12 opacity-80">
+            <div class="glass px-6 py-2 rounded-full flex items-center space-x-3">
+                <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                <span class="text-[10px] font-bold tracking-widest uppercase">Sunucu: Online</span>
+            </div>
+            <div class="glass px-6 py-2 rounded-full flex items-center space-x-3">
+                <span class="text-blue-500 font-black text-[10px]">1,240+</span>
+                <span class="text-[10px] font-bold tracking-widest uppercase" data-lang="statsOpt">Optimizasyon</span>
+            </div>
+        </div>
+
+        <div data-lang="versionBadge" class="mb-6 px-4 py-1.5 bg-white/5 border border-white/10 rounded-full text-blue-400 text-[10px] font-bold tracking-[0.4em] uppercase">
             Sürüm v1.0.0 Stable
         </div>
         
-        <h1 class="hero-text text-6xl md:text-[100px] font-extrabold tracking-tighter title-spacing uppercase">
-            GÜCÜN YENİ YÜZÜ
-        </h1>
+        <h1 data-lang="heroTitle" class="hero-text text-5xl md:text-[80px] font-extrabold tracking-tighter uppercase leading-tight mb-6">GÜCÜN YENİ YÜZÜ</h1>
         
-        <p class="text-gray-400 max-w-xl text-base md:text-lg mb-12 font-light leading-relaxed">
-            Performans optimizasyonunda yeni bir dönem başladı. Power Evolution ile sisteminizi en verimli hale getirin.
-        </p>
+        <p data-lang="heroDesc" class="text-gray-400 max-w-xl text-base md:text-lg mb-12 font-light leading-relaxed">Performans optimizasyonunda yeni bir dönem başladı.</p>
 
-        <div id="lockedArea">
-            <button onclick="toggleModal('loginModal')" class="glass px-14 py-5 rounded-2xl font-bold text-sm text-gray-400 hover:text-white hover:border-blue-500/40 transition-all duration-700 group tracking-widest uppercase text-center">
+        <div id="actionArea" class="flex flex-col items-center min-h-[100px] justify-center">
+            <button id="verifyButton" onclick="toggleModal('loginModal')" data-lang="verifyBtn" class="glass px-14 py-5 rounded-2xl font-bold text-sm text-gray-400 hover:text-white hover:border-blue-500/40 transition-all duration-700 tracking-widest uppercase">
                 Panel Erişimini Doğrula
             </button>
-        </div>
-        
-        <div id="unlockedArea" class="hidden flex flex-col items-center">
-            <div class="flex flex-col md:flex-row gap-4 items-center">
-                <a id="dynamicDownloadBtn" href="#" target="_blank" class="download-active px-14 py-6 text-white rounded-2xl font-black text-xl tracking-tighter transition-all hover:scale-105 inline-block text-center">
-                   Power Evolution İndir
+            
+            <div id="unlockedControls" class="hidden fade-in flex flex-col items-center space-y-4">
+                <a id="dynamicDownloadBtn" data-lang="downloadBtn" href="#" target="_blank" class="download-active px-14 py-6 text-white rounded-2xl font-black text-xl tracking-tighter transition-all hover:scale-105 inline-block uppercase">
+                    Power Evolution İndir
                 </a>
-                <a id="secondaryDownloadBtn" href="#" target="_blank" class="glass px-14 py-6 text-gray-300 rounded-2xl font-black text-xl tracking-tighter transition-all hover:scale-105 border border-white/10 inline-block hover:bg-white/5 text-center">
-                    YEDEK LİNK
-                </a>
+                <p class="text-[9px] text-gray-500 font-bold tracking-[0.3em] uppercase italic">Sorun mu yaşıyorsun? <a href="https://discord.gg/VCg5PKaQKM" target="_blank" class="text-blue-500 hover:underline">Discord'a gel</a></p>
             </div>
-            <p class="text-[9px] text-gray-500 mt-8 font-bold tracking-[0.5em] uppercase text-center">Güvenli Bağlantı Kuruldu</p>
         </div>
 
-        <div class="contact-info w-full max-w-2xl flex flex-col md:flex-row items-center justify-center gap-8 text-[11px] font-medium text-gray-500 tracking-widest uppercase">
-            <div class="flex items-center space-x-2 hover:text-white transition cursor-default">
-                <span class="text-blue-500 text-center">EMAIL:</span>
-                <span class="text-center">powerevolution@outlook.com.tr</span>
-            </div>
-            <div class="flex items-center space-x-2 hover:text-white transition cursor-default">
-                <span class="text-blue-500 text-center">INSTAGRAM:</span>
-                <span class="text-center">jatenow.wt</span>
+        <div class="mt-40 w-full max-w-3xl border-t border-white/5 pt-20">
+            <h2 class="text-xs font-bold tracking-[0.6em] text-blue-500 uppercase mb-12" data-lang="faqTitle">Sıkça Sorulan Sorular</h2>
+            <div class="space-y-4 text-left">
+                <div class="faq-item glass rounded-2xl p-6 cursor-pointer group transition-all" onclick="this.classList.toggle('active')">
+                    <div class="flex justify-between items-center">
+                        <h4 class="text-sm font-bold uppercase tracking-tight group-hover:text-blue-400 transition" data-lang="q1">Yazılım güvenli mi?</h4>
+                        <span class="faq-icon transition-transform duration-300 text-xs">▼</span>
+                    </div>
+                    <div class="faq-content text-xs text-gray-500 leading-relaxed italic" data-lang="a1">Power Evolution, tamamen kernel düzeyinde güvenli kodlanmıştır ve üçüncü taraf müdahalelere kapalıdır.</div>
+                </div>
+                <div class="faq-item glass rounded-2xl p-6 cursor-pointer group transition-all" onclick="this.classList.toggle('active')">
+                    <div class="flex justify-between items-center">
+                        <h4 class="text-sm font-bold uppercase tracking-tight group-hover:text-blue-400 transition" data-lang="q2">Destek nasıl alabilirim?</h4>
+                        <span class="faq-icon transition-transform duration-300 text-xs">▼</span>
+                    </div>
+                    <div class="faq-content text-xs text-gray-500 leading-relaxed italic" data-lang="a2">Resmi Discord sunucumuz üzerinden 7/24 teknik destek alabilirsiniz.</div>
+                </div>
             </div>
         </div>
     </main>
 
-    <div id="loginModal" class="fixed inset-0 bg-black/90 backdrop-blur-3xl z-[100] hidden flex items-center justify-center p-4">
+    <div id="purchaseToast" class="fixed bottom-8 left-8 z-[60] glass p-5 rounded-2xl flex items-center space-x-4 border-l-4 border-l-blue-600 shadow-2xl">
+        <div class="w-10 h-10 bg-blue-600/20 rounded-full flex items-center justify-center text-blue-500">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+        </div>
+        <div><p id="toastUser" class="text-white text-[12px] font-bold tracking-tight">Kullanıcı***</p><p data-lang="toastAction" class="text-gray-500 text-[10px] font-bold uppercase tracking-widest">Lisans Doğrulandı</p></div>
+    </div>
+
+    <div id="loginModal" class="fixed inset-0 bg-black/95 backdrop-blur-3xl z-[1000] hidden flex items-center justify-center p-4">
         <div class="glass w-full max-w-[400px] p-12 rounded-[40px] relative">
             <button onclick="toggleModal('loginModal')" class="absolute top-8 right-8 text-gray-500 hover:text-white transition text-2xl">&times;</button>
-            
-            <div class="text-center mb-12">
-                <h3 class="text-3xl font-black mb-2 uppercase tracking-tighter text-center">Oturum Aç</h3>
-                <p class="text-gray-500 text-[10px] font-bold tracking-[0.3em] uppercase text-center">Erişim Anahtarı Doğrulama</p>
-            </div>
-            
-            <div class="space-y-6">
-                <input id="u" type="text" spellcheck="false" class="w-full bg-white/[0.03] border border-white/5 p-4 rounded-2xl outline-none focus:border-blue-500 transition text-white text-sm" placeholder="Kullanıcı Adı">
-                <input id="p" type="password" class="w-full bg-white/[0.03] border border-white/5 p-4 rounded-2xl outline-none focus:border-blue-500 transition text-white text-sm" placeholder="Şifre">
-                <button onclick="loginProcess()" id="authBtn" class="w-full bg-blue-600 py-5 rounded-2xl font-black text-xs tracking-[0.2em] hover:bg-blue-500 transition-all active:scale-[0.97] text-center">SİSTEME GİRİŞ YAP</button>
-                <p id="errorMsg" class="text-red-500 text-[10px] text-center font-bold hidden uppercase tracking-widest animate-pulse">Erişim reddedildi: Geçersiz Parametre.</p>
+            <h3 data-lang="modalTitle" class="text-3xl font-black mb-12 uppercase tracking-tighter text-center">Oturum Aç</h3>
+            <div class="space-y-6 text-center">
+                <input id="u" type="text" class="w-full bg-white/[0.03] border border-white/5 p-4 rounded-2xl outline-none focus:border-blue-500 text-white text-sm" placeholder="Kullanıcı Adı">
+                <input id="p" type="password" class="w-full bg-white/[0.03] border border-white/5 p-4 rounded-2xl outline-none focus:border-blue-500 text-white text-sm" placeholder="Şifre">
+                <p id="errorMsg" class="text-red-500 text-[10px] font-bold uppercase hidden">Hatalı Bilgi!</p>
+                <button onclick="loginProcess()" id="authBtn" data-lang="modalBtn" class="w-full bg-blue-600 py-5 rounded-2xl font-black text-xs tracking-[0.2em] hover:bg-blue-500 active:scale-95 transition">SİSTEME GİRİŞ YAP</button>
             </div>
         </div>
     </div>
 
     <script>
-        document.addEventListener('contextmenu', e => e.preventDefault());
+        // --- GÜVENLİK ENGELİ (F12 & Sağ Tık) ---
+        document.addEventListener('contextmenu', (e) => e.preventDefault());
         document.onkeydown = function(e) {
-            if(e.keyCode == 123 || (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74)) || (e.ctrlKey && e.keyCode == 85)) return false;
+            if (e.keyCode == 123) return false; // F12
+            if (e.ctrlKey && e.shiftKey && (e.keyCode == 'I'.charCodeAt(0) || e.keyCode == 'J'.charCodeAt(0) || e.keyCode == 'C'.charCodeAt(0))) return false;
+            if (e.ctrlKey && (e.keyCode == 'U'.charCodeAt(0) || e.keyCode == 'S'.charCodeAt(0))) return false;
         };
 
-        const SUPA_URL = 'https://qgdizoyucaqefakvvhyn.supabase.co'; 
-        const SUPA_KEY = 'sb_publishable_4lGcYO1Jp0PpRoVWc5sNTw_CfynNZMI'; 
+        const translations = {
+            tr: {
+                loginBtn: "OTURUM AÇ", accessGranted: "Erişim Onaylandı", versionBadge: "SÜRÜM V1.0.0 STABLE",
+                heroTitle: "GÜCÜN YENİ YÜZÜ", heroDesc: "Performans optimizasyonunda yeni bir dönem başladı. Power Evolution ile sisteminizi en verimli hale getirin.",
+                verifyBtn: "PANEL ERİŞİMİNİ DOĞRULA", downloadBtn: "POWER EVOLUTION İNDİR", statsOpt: "Optimizasyon",
+                faqTitle: "SIKÇA SORULAN SORULAR", q1: "Yazılım güvenli mi?", a1: "Power Evolution, tamamen kernel düzeyinde güvenli kodlanmıştır.",
+                q2: "Destek nasıl alabilirim?", a2: "Discord sunucumuz üzerinden 7/24 teknik destek alabilirsiniz.",
+                modalTitle: "OTURUM AÇ", modalBtn: "SİSTEME GİRİŞ YAP", toastAction: "Lisans Doğrulandı"
+            },
+            en: {
+                loginBtn: "LOGIN", accessGranted: "Access Granted", versionBadge: "VERSION V1.0.0 STABLE",
+                heroTitle: "NEW FACE OF POWER", heroDesc: "A new era in performance optimization has begun.",
+                verifyBtn: "VERIFY PANEL ACCESS", downloadBtn: "DOWNLOAD POWER EVOLUTION", statsOpt: "Optimizations",
+                faqTitle: "FREQUENTLY ASKED QUESTIONS", q1: "Is the software safe?", a1: "Power Evolution is securely coded at the kernel level.",
+                q2: "How can I get support?", a2: "You can get 24/7 technical support via our Discord server.",
+                modalTitle: "SIGN IN", modalBtn: "SYSTEM LOGIN", toastAction: "License Verified"
+            }
+        };
 
-        const _supabase = supabase.createClient(SUPA_URL, SUPA_KEY);
+        function changeLanguage(lang) {
+            document.querySelectorAll('[data-lang]').forEach(el => el.innerText = translations[lang][el.getAttribute('data-lang')]);
+            document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('bg-blue-600', b.id === `lang-${lang}`));
+        }
 
         function toggleModal(id) { document.getElementById(id).classList.toggle('hidden'); }
 
         async function loginProcess() {
+            const btn = document.getElementById('authBtn');
             const user = document.getElementById('u').value;
             const pass = document.getElementById('p').value;
-            const btn = document.getElementById('authBtn');
-            const error = document.getElementById('errorMsg');
+            
+            if(!user || !pass) return;
 
             btn.innerText = "DOĞRULANIYOR...";
-            btn.disabled = true;
-
-            const { data } = await _supabase.from('users').select('*').eq('username', user).eq('password', pass);
-
-            if (data && data.length > 0) {
+            
+            // Supabase entegrasyonu buraya gelecek. Şimdilik simülasyon:
+            setTimeout(() => {
                 toggleModal('loginModal');
-                // Yeni MediaFire linkin güvenli şekilde tanımlandı
-                const newLinkEnc = btoa("https://www.mediafire.com/file/nvo1xe2ro25zd10/Power+Evolution.rar/file");
-                
-                document.getElementById('dynamicDownloadBtn').href = atob(newLinkEnc);
-                document.getElementById('secondaryDownloadBtn').href = atob(newLinkEnc);
-
+                document.getElementById('verifyButton').classList.add('hidden');
+                document.getElementById('unlockedControls').classList.remove('hidden');
                 document.getElementById('navLoginBtn').classList.add('hidden');
                 document.getElementById('userBadge').classList.remove('hidden');
-                document.getElementById('lockedArea').classList.add('hidden');
-                document.getElementById('unlockedArea').classList.remove('hidden');
-            } else {
-                error.classList.remove('hidden');
-                btn.innerText = "SİSTEME GİRİŞ YAP";
-                btn.disabled = false;
-            }
+                
+                const dlLink = atob("aHR0cHM6Ly93d3cubWVkaWFmaXJlLmNvbS9maWxlL252bzF4ZTJybzI1emQxMC9Qb3dlcitFdm9sdXRpb24ucmFyL2ZpbGU=");
+                document.getElementById('dynamicDownloadBtn').href = dlLink;
+            }, 1000);
         }
+
+        const fakeUsers = ["Olcay***", "Jateno***", "Wolf***", "Admin***", "Kadir***", "Mehmet***", "Slayer***"];
+        setInterval(() => {
+            const toast = document.getElementById('purchaseToast');
+            if(toast) {
+                document.getElementById('toastUser').innerText = fakeUsers[Math.floor(Math.random() * fakeUsers.length)];
+                toast.classList.add('show');
+                setTimeout(() => toast.classList.remove('show'), 4000);
+            }
+        }, 12000);
     </script>
 </body>
 </html>
-
-
